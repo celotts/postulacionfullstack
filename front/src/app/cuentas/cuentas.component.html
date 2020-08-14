@@ -1,0 +1,104 @@
+<div class="container">
+  <table class="table table-responsive table-striped col-9">
+    <div class="col-11 text-right">
+      <button
+        type="button"
+        class="btn btn-primary btn-sm col-xs-2 margin-left btn-space"
+        (click)="getCuentas()"
+      >
+        Refrescar
+      </button>
+      <button
+        type="button"
+        class="btn btn-info btn-sm col-xs-4 margin-left btn-space"
+        [disabled]="curPage == 1"
+        (click)="anterior()"
+      >
+        Anterior
+      </button>
+      <button
+        type="button"
+        [disabled]="curPage >= cantidadItem / pageSize"
+        class="btn btn-info btn-sm col-xs-2 margin-left btn-space"
+        (click)="siguiente()"
+      >
+        Siguiente</button
+      ><button
+        type="button"
+        [disabled]="curPage >= cantidadItem / pageSize"
+        class="btn btn-info btn-sm col-xs-2 margin-left btn-space"
+        (click)="ultima()"
+      >
+        Última
+      </button>
+    </div>
+    <thead>
+      <tr>
+        <th>Rut Suscriptor</th>
+        <th>
+          Nro de Cuenta
+        </th>
+        <th>Nombre</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let itemCuentas of dataCuentas
+            | slice: curPage * pageSize - pageSize:curPage * pageSize
+        "
+        [ngClass]="{
+          'bg-danger': itemCuentas.validEmail === 'false',
+          'text-white': itemCuentas.validEmail === 'false'
+        }"
+      >
+        <td>{{ itemCuentas.RUT_SUSCRIPTOR }}</td>
+        <td>{{ itemCuentas.CER_NCUENTA }}</td>
+        <td>{{ itemCuentas.CER_NOMBRE }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="text-center">
+    <p>
+      <button
+        class="btn btn-info btn-sm col-xs-4 margin-left btn-space"
+        [disabled]="curPage == 1"
+        (click)="anterior()"
+      >
+        Anterior
+      </button>
+      <span class="btn-space"
+        >Página {{ curPage }} de
+        <a (click)="ultima()">{{ numberOfPages() }}</a></span
+      >
+      <button
+        class="btn btn-info btn-sm col-xs-4 margin-left btn-space"
+        [disabled]="curPage >= cantidadItem / pageSize"
+        (click)="siguiente()"
+      >
+        Siguiente
+      </button>
+      <button
+        type="button"
+        [disabled]="curPage >= cantidadItem / pageSize"
+        class="btn btn-info btn-sm col-xs-2 margin-left btn-space"
+        (click)="ultima()"
+      >
+        Última
+      </button>
+    </p>
+  </div>
+</div>
+<ng-container *ngIf="dataCuentas?.length === 0">
+  <h2>No existen datos.</h2>
+</ng-container>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="square-jelly-box"
+  [fullScreen]="true"
+>
+  <p style="color: white;">Cargando...</p>
+</ngx-spinner>
